@@ -4,4 +4,4 @@
 
 Starting with GIT basics. 
 
-Now connecting with Eclipse Workspace.
+Now connecting to Eclipse workspace.
