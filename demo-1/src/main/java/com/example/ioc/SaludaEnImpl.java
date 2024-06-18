@@ -1,8 +1,11 @@
 package com.example.ioc;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component("saludaEn")
+@Qualifier("en")
 public class SaludaEnImpl implements Saluda {
 	Entorno entorno;
 	
@@ -13,5 +16,9 @@ public class SaludaEnImpl implements Saluda {
 	@Override
 	public void saluda(String nombre) {
 		entorno.write("Hello " + nombre);
+	}
+	@Override
+	public int getContador() {
+		return entorno.getContador();
 	}
 }
