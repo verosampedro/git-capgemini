@@ -37,7 +37,6 @@ public class Demo1Application implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.err.println("Aplicación arrancada...");
 		
-//		var saluda = new Saluda();
 		
 		System.out.println(saluda.getContador());
 		
