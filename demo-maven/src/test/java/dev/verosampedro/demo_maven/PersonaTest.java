@@ -7,6 +7,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import dev.verosampedro.core.test.Smoke;
+
 class PersonaTest {
 
 	@Nested
@@ -15,6 +17,7 @@ class PersonaTest {
 		@Nested
 		class OK {
 			@Test
+			@Smoke
 			void soloNombre() {
 				var persona = new Persona(1, "Verónica");
 				assertNotNull(persona);
