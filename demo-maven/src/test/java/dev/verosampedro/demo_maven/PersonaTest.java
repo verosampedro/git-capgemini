@@ -1,6 +1,12 @@
 package dev.verosampedro.demo_maven;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -56,6 +62,27 @@ class PersonaTest {
 			void soloNombre(int id, String nombre) {
 				assertThrows(Exception.class, () -> new Persona(id, nombre));
 			}
+		}
+		
+		@Test
+		void upperCaseService() {
+			var persona = new Persona(1, "Verónica", "Sampedro");
+			var dao = mock(PersonaRepository.class);
+			when(dao.getOne(anyInt())).thenReturn(Optional.of(persona));
+			
+			var service = new PersonaService(dao);
+			service.upperCase(1);
+			
+			assertEquals("VERÓNICA", persona.getNombre());
+			verify(dao).modify(persona);
+		}
+		
+		@Test
+		void upperCaseKO() {
+			var dao = mock(PersonaRepository.class);
+			when(dao.getOne(anyInt())).thenReturn(Optional.empty());
+			var service = new PersonaService(dao);
+			assertThrows(IllegalArgumentException.class, () -> service.upperCase(1));
 		}
 	}
 

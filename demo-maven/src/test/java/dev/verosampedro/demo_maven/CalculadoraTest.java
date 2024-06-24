@@ -1,6 +1,9 @@
 package dev.verosampedro.demo_maven;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -114,4 +117,11 @@ class CalculadoraTest {
 		}
 	}
 
+	@Test
+	void simulator() {
+		Calculadora calculadora = mock(Calculadora.class);
+		when(calculadora.add(anyDouble(), anyDouble())).thenReturn(3.0);
+		assertEquals(3, calculadora.add(2.0, 2.0));
+		assertEquals(3, calculadora.add(12.0, 2.0));
+	}
 }
