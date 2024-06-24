@@ -5,6 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.example.domains.contracts.repositories.ActorRepository;
+import com.example.domains.entities.Actor;
 import com.example.ioc.Entorno;
 import com.example.ioc.Rango;
 import com.example.ioc.Saluda;
@@ -15,8 +17,35 @@ public class Demo1Application implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(Demo1Application.class, args);
 	}
-
+	
 	@Autowired
+	ActorRepository dao;
+	
+	@Override
+	public void run(String... args) throws Exception {
+		System.err.println("Aplicación arrancada...");
+		
+		// MÉTODO GET
+		var item = dao.findById(201);
+		if(item.isEmpty()) {
+			System.err.println("No encontrado");
+		} else {
+			var actor = item.get();
+			actor.setFirstName(actor.getFirstName().toUpperCase());
+			System.out.println(item.get());
+		} 
+		
+		dao.findAll().forEach(System.out::println);
+		
+		// MÉTODO DELETE
+		// dao.deleteById(201);
+		
+		 // MÉTODO CREATE
+		 /* var actor = new Actor(0, "Verónica", "Sampedro");
+		 System.out.println(dao.save(actor)); */
+	}
+
+/*	@Autowired
 //	@Qualifier("es")
 	Saluda saluda;
 	
@@ -31,25 +60,7 @@ public class Demo1Application implements CommandLineRunner {
 	private Rango rango;
 
 //	@Autowired(required = false)
-//	SaludaEnImpl git-capgemini;
+//	SaludaEnImpl git-capgemini; */
 	
-	@Override
-	public void run(String... args) throws Exception {
-		System.err.println("Aplicación arrancada...");
-		
-		
-		System.out.println(saluda.getContador());
-		
-		saluda.saluda("Mundo");
-		saluda2.saluda("Mundo");
-		
-		System.out.println(saluda.getContador());
-		
-		System.out.println(saluda2.getContador());
-		
-		System.out.println(entorno.getContador());
-		
-		System.out.println(rango.getMin() + " -> " + rango.getMax());
-	}
 
 }
