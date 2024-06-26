@@ -1,10 +1,6 @@
 package com.example.domains.entities.models;
 
 import java.io.Serializable;
-
-import com.example.domains.entities.Actor;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

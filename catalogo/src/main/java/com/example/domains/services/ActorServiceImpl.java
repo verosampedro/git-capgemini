@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,12 +16,13 @@ import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
-import lombok.NonNull;
-
 @Service
 public class ActorServiceImpl implements ActorService {
-	@Autowired
-	ActorRepository dao;
+	private ActorRepository dao;
+
+	public ActorServiceImpl(ActorRepository dao) {
+		this.dao = dao;
+	}
 
 	@Override
 	public <T> List<T> getByProjection(Class<T> type) {
@@ -65,9 +65,8 @@ public class ActorServiceImpl implements ActorService {
 			throw new InvalidDataException("No puede ser nulo");
 		if(item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if(dao.existsById(item.getActorId()))
-			throw new DuplicateKeyException(item.getErrorsMessage());
-		
+		if(item.getActorId() != 0 && dao.existsById(item.getActorId()))
+			throw new DuplicateKeyException("Ya existe");
 		return dao.save(item);
 	}
 
@@ -79,7 +78,6 @@ public class ActorServiceImpl implements ActorService {
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
 		if(!dao.existsById(item.getActorId()))
 			throw new NotFoundException();
-		
 		return dao.save(item);
 	}
 
@@ -87,7 +85,7 @@ public class ActorServiceImpl implements ActorService {
 	public void delete(Actor item) throws InvalidDataException {
 		if(item == null)
 			throw new InvalidDataException("No puede ser nulo");
-		deleteById(item.getActorId());
+		dao.delete(item);
 	}
 
 	@Override
@@ -96,8 +94,14 @@ public class ActorServiceImpl implements ActorService {
 	}
 
 	@Override
-	public List<Actor> novedades(@NonNull Timestamp fecha) {
-		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
+	public void repartePremios() {
+		// TODO Auto-generated method stub
+		
 	}
 
+	@Override
+	public List<Actor> novedades(Timestamp fecha) {
+		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
+	}
+	
 }

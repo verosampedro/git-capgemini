@@ -3,20 +3,23 @@ package com.example.domains.services;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
+
 import com.example.domains.contracts.repositories.LanguageRepository;
 import com.example.domains.contracts.services.LanguageService;
 import com.example.domains.entities.Language;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
-import lombok.NonNull;
 
 @Service
 public class LanguageServiceImpl implements LanguageService {
-	@Autowired
-	LanguageRepository dao;
+	private LanguageRepository dao;
+
+	public LanguageServiceImpl(LanguageRepository dao) {
+		this.dao = dao;
+	}
 
 	@Override
 	public List<Language> getAll() {
@@ -34,9 +37,8 @@ public class LanguageServiceImpl implements LanguageService {
 			throw new InvalidDataException("No puede ser nulo");
 		if(item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if(dao.existsById(item.getLanguageId()))
-			throw new DuplicateKeyException(item.getErrorsMessage());
-		
+		if(item.getLanguageId() != 0 && dao.existsById(item.getLanguageId()))
+			throw new DuplicateKeyException("Ya existe");
 		return dao.save(item);
 	}
 
@@ -48,7 +50,6 @@ public class LanguageServiceImpl implements LanguageService {
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
 		if(!dao.existsById(item.getLanguageId()))
 			throw new NotFoundException();
-		
 		return dao.save(item);
 	}
 
@@ -56,7 +57,7 @@ public class LanguageServiceImpl implements LanguageService {
 	public void delete(Language item) throws InvalidDataException {
 		if(item == null)
 			throw new InvalidDataException("No puede ser nulo");
-		deleteById(item.getLanguageId());
+		dao.delete(item);
 	}
 
 	@Override
@@ -65,8 +66,8 @@ public class LanguageServiceImpl implements LanguageService {
 	}
 
 	@Override
-	public List<Language> novedades(@NonNull Timestamp fecha) {
+	public List<Language> novedades(Timestamp fecha) {
 		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
 	}
-
+	
 }

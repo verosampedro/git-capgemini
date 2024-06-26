@@ -2,12 +2,17 @@ package com.example.domains.entities;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 
+import com.example.domains.core.entities.EntityBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -17,27 +22,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name="category")
 @NamedQuery(name="Category.findAll", query="SELECT c FROM Category c")
-public class Category implements Serializable {
+public class Category extends EntityBase<Category> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="category_id", unique=true, nullable=false)
+	@Column(name="category_id")
+	@JsonProperty("id")
 	private int categoryId;
 
-	@Column(name="last_update", insertable=false, updatable=false, nullable=false)
+	@Column(name="last_update", insertable = false, updatable = false)
+	@PastOrPresent
 	@JsonIgnore
 	private Timestamp lastUpdate;
 
-	@Column(nullable=false, length=25)
+	@NotBlank
+	@Size(max=25)
 	@JsonProperty("categoria")
 	private String name;
 
 	//bi-directional many-to-one association to FilmCategory
 	@OneToMany(mappedBy="category")
+	@JsonIgnore
 	private List<FilmCategory> filmCategories;
 
 	public Category() {
+	}
+
+	public Category(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public Category(int categoryId, @NotBlank @Size(max = 25) String name) {
+		this.categoryId = categoryId;
+		this.name = name;
 	}
 
 	public int getCategoryId() {
@@ -86,19 +104,24 @@ public class Category implements Serializable {
 		return filmCategory;
 	}
 
-	public boolean isInvalid() {
-		// TODO Auto-generated method stub
-		return false;
+	@Override
+	public int hashCode() {
+		return Objects.hash(categoryId);
 	}
 
-	public String getErrorsMessage() {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj instanceof Category o)
+			return categoryId == o.categoryId;
+		else
+			return false;
 	}
 
-	public Map<String, String> getErrorsFields() {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public String toString() {
+		return "Category [categoryId=" + categoryId + ", name=" + name + ", lastUpdate=" + lastUpdate + "]";
 	}
 
 }

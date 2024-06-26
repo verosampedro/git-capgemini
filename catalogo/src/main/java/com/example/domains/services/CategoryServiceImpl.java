@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 
 import com.example.domains.contracts.repositories.CategoryRepository;
 import com.example.domains.contracts.services.CategoryService;
@@ -17,12 +15,15 @@ import com.example.exceptions.NotFoundException;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-	@Autowired
 	private CategoryRepository dao;
-	
+
+	public CategoryServiceImpl(CategoryRepository dao) {
+		this.dao = dao;
+	}
+
 	@Override
 	public List<Category> getAll() {
-		return dao.findAll(Sort.by("name"));
+		return dao.findAll();
 	}
 
 	@Override
@@ -33,23 +34,30 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Category add(Category item) throws DuplicateKeyException, InvalidDataException {
 		if(item == null)
-			throw new InvalidDataException("Faltan los datos");
+			throw new InvalidDataException("No puede ser nulo");
 		if(item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if(getOne(item.getCategoryId()).isPresent())
-			throw new DuplicateKeyException();
+		if(item.getCategoryId() != 0 && dao.existsById(item.getCategoryId()))
+			throw new DuplicateKeyException("Ya existe");
 		return dao.save(item);
 	}
 
 	@Override
 	public Category modify(Category item) throws NotFoundException, InvalidDataException {
 		if(item == null)
-			throw new InvalidDataException("Faltan los datos");
+			throw new InvalidDataException("No puede ser nulo");
 		if(item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if(getOne(item.getCategoryId()).isEmpty())
+		if(!dao.existsById(item.getCategoryId()))
 			throw new NotFoundException();
 		return dao.save(item);
+	}
+
+	@Override
+	public void delete(Category item) throws InvalidDataException {
+		if(item == null)
+			throw new InvalidDataException("No puede ser nulo");
+		dao.delete(item);
 	}
 
 	@Override
@@ -58,15 +66,8 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void delete(Category item) throws InvalidDataException {
-		if(item == null)
-			throw new InvalidDataException("Faltan los datos");
-		deleteById(item.getCategoryId());
-	}
-
-	@Override
 	public List<Category> novedades(Timestamp fecha) {
 		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
 	}
-
+	
 }
