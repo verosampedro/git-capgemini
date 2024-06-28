@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Objects;
 
 import com.example.domains.core.entities.EntityBase;
-import com.example.domains.core.validations.NIF;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,16 +34,13 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 	@Column(name="first_name", nullable=false, length=45)
 	@NotBlank
 	@Size(max=45, min=2)
-//	@Pattern(regexp = "^[A-Z]+$", message = "tiene que estar en mayusculas")
+	@Pattern(regexp = "^[A-Z]+$", message = "Tiene que estar en mayusculas")
 	private String firstName;
 
 	@Column(name="last_name", nullable=false, length=45)
-	@NotBlank
-	@Size(max=45, min=2)
-//	@NIF
 	private String lastName;
 
-	@Column(name="last_update", insertable=false, updatable=false, nullable=false)
+	@Column(name="last_update", insertable=false, updatable=false/*, nullable=false*/)
 	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private Timestamp lastUpdate;
 
@@ -55,12 +51,13 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 
 	public Actor() {
 	}
-
+	
 	public Actor(int actorId) {
-		this.actorId = actorId;
+		this.actorId=actorId;
 	}
 
 	public Actor(int actorId, String firstName, String lastName) {
+		super();
 		this.actorId = actorId;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -119,6 +116,8 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 
 		return filmActor;
 	}
+	
+	
 
 	@Override
 	public int hashCode() {
@@ -136,13 +135,13 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 		Actor other = (Actor) obj;
 		return actorId == other.actorId;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Actor [actorId=" + actorId + ", firstName=" + firstName + ", lastName=" + lastName + ", lastUpdate="
 				+ lastUpdate + "]";
 	}
-
+	
 	public void jubilate() {
 		
 	}
@@ -150,5 +149,7 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 	public void recibePremio(String premio) {
 		
 	}
+
 	
+
 }

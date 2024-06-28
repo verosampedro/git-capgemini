@@ -16,7 +16,8 @@ import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
 @Service
-public class ActorServiceImpl implements ActorService {
+public class ActorServiceImpl implements ActorService{
+	
 	private ActorRepository dao;
 
 	public ActorServiceImpl(ActorRepository dao) {
@@ -30,12 +31,12 @@ public class ActorServiceImpl implements ActorService {
 
 	@Override
 	public <T> Iterable<T> getByProjection(Sort sort, Class<T> type) {
-		return dao.findAllBy(sort, type);
+		return dao.findAllBy(sort,type);
 	}
 
 	@Override
 	public <T> Page<T> getByProjection(Pageable pageable, Class<T> type) {
-		return dao.findAllBy(pageable, type);
+		return dao.findAllBy(pageable,type);
 	}
 
 	@Override
@@ -60,31 +61,38 @@ public class ActorServiceImpl implements ActorService {
 
 	@Override
 	public Actor add(Actor item) throws DuplicateKeyException, InvalidDataException {
-		if(item == null)
+		if(item == null) {
 			throw new InvalidDataException("No puede ser nulo");
-		if(item.isInvalid())
+		}
+		if(item.isInvalid()) {
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if(item.getActorId() != 0 && dao.existsById(item.getActorId()))
+		}
+		if(item.getActorId() != 0 && dao.existsById(item.getActorId())) {
 			throw new DuplicateKeyException("Ya existe");
+		}
 		return dao.save(item);
 	}
 
 	@Override
 	public Actor modify(Actor item) throws NotFoundException, InvalidDataException {
-		if(item == null)
+		if(item == null) {
 			throw new InvalidDataException("No puede ser nulo");
-		if(item.isInvalid())
+		}
+		if(item.isInvalid()) {
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if(!dao.existsById(item.getActorId()))
+		}
+		if(!dao.existsById(item.getActorId())) {
 			throw new NotFoundException();
+		}
 		return dao.save(item);
 	}
 
 	@Override
 	public void delete(Actor item) throws InvalidDataException {
-		if(item == null)
+		if(item == null) {
 			throw new InvalidDataException("No puede ser nulo");
-		dao.delete(item);
+		}
+		dao.delete(item);	
 	}
 
 	@Override
@@ -94,8 +102,7 @@ public class ActorServiceImpl implements ActorService {
 
 	@Override
 	public void repartePremios() {
-		// TODO Auto-generated method stub
-		
 	}
+	
 	
 }

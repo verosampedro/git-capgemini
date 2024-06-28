@@ -13,21 +13,24 @@ import lombok.NonNull;
 //@Qualifier("es")
 @Scope("prototype")
 @Profile("es")
+
 public class SaludaImpl implements Saluda {
+	
 //	public static class SaludaEvento {
 //		private String tipo;
-//		private String detinatario;
-//		public SaludaEvento(String tipo, String detinatario) {
+//		private String destinatario;
+//		public SaludaEvento(String tipo, String destinatario) {
 //			this.tipo = tipo;
-//			this.detinatario = detinatario;
+//			this.detinatario = destinatario;
 //		}
-//		public String tipo() {
+//		public String getTipo() {
 //			return tipo;
 //		}
-//		public String detinatario() {
-//			return detinatario;
+//		public String getDestinatario() {
+//			return destinatario;
 //		}		
 //	}
+	
 	public static record SaludaEvent(String tipo,  String detinatario) { }
 	
 	private ApplicationEventPublisher publisher;

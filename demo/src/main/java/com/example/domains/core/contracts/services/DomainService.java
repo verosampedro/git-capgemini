@@ -7,6 +7,8 @@ import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
+
+
 public interface DomainService<E, K> {
 	List<E> getAll();
 	

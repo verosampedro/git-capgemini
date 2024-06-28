@@ -12,4 +12,3 @@ public class Rango {
     private int min;
     private int max;    
 }
-

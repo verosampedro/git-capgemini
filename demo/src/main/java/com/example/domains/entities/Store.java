@@ -21,7 +21,7 @@ public class Store implements Serializable {
 	@Column(name="store_id", unique=true, nullable=false)
 	private byte storeId;
 
-	@Column(name="last_update", nullable=false)
+	@Column(name="last_update", insertable=false, updatable=false, nullable=false)
 	private Timestamp lastUpdate;
 
 	//bi-directional many-to-one association to Customer
