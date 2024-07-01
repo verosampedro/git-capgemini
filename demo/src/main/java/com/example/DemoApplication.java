@@ -30,7 +30,7 @@ public class DemoApplication implements CommandLineRunner {
 //		srv.getByProjection(ActorDTO.class).forEach(System.out::println);
 	}
 	
-	@Bean
+	/* @Bean
 	CommandLineRunner lookup(CalculatorProxy client) {
 		return args -> { 
 			System.err.println("Suma remoto --> " + client.add(2, 3)); 
@@ -40,7 +40,7 @@ public class DemoApplication implements CommandLineRunner {
 			
 		};
 	}
-	
+	 */
 //	@Bean
 //	CommandLineRunner lookup(Jaxb2Marshaller marshaller) {
 //		return args -> {		
