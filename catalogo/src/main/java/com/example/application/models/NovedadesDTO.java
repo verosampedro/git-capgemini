@@ -3,6 +3,7 @@ package com.example.application.models;
 import java.util.List;
 
 import com.example.domains.entities.Category;
+import com.example.domains.entities.Film;
 import com.example.domains.entities.Language;
 import com.example.domains.entities.models.ActorDTO;
 import com.example.domains.entities.models.FilmShortDTO;

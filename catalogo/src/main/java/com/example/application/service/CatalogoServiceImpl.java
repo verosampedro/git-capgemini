@@ -28,6 +28,7 @@ public class CatalogoServiceImpl implements CatalogoService {
 
 	@Override
 	public NovedadesDTO novedades(Timestamp fecha) {
+		// Timestamp fecha = Timestamp.valueOf("2019-01-01 00:00:00");
 		if(fecha == null)
 			fecha = Timestamp.from(Instant.now().minusSeconds(36000));
 		return new NovedadesDTO(
