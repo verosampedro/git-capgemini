@@ -9,13 +9,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 import com.example.domains.core.entities.EntityBase;
+import com.example.domains.entities.models.FilmShortDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.math.BigDecimal;
@@ -431,18 +429,19 @@ public class Film extends EntityBase<Film> implements Serializable {
 		target.length = length;
 		target.replacementCost = replacementCost;
 		target.rating = rating;
-		// Borra los actores que sobran
 		target.getActors().stream().filter(item -> !getActors().contains(item))
 				.forEach(item -> target.removeActor(item));
-		// Añade los actores que faltan
 		getActors().stream().filter(item -> !target.getActors().contains(item)).forEach(item -> target.addActor(item));
-		// Borra las categorias que sobran
 		target.getCategories().stream().filter(item -> !getCategories().contains(item))
 				.forEach(item -> target.removeCategory(item));
-		// Añade las categorias que faltan
 		getCategories().stream().filter(item -> !target.getCategories().contains(item))
 				.forEach(item -> target.addCategory(item));
 		return target;
+	}
+
+	public static FilmShortDTO from(Film item) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 //	@PostPersist

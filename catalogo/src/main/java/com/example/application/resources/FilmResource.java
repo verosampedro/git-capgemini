@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+
+import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -77,10 +79,12 @@ public class FilmResource {
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@Valid @RequestBody Film item) throws BadRequestException, DuplicateKeyException, InvalidDataException {
-        var newItem = srv.add(FilmShortDTO.from(item));
+    @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
+    public ResponseEntity<Object> add(@Valid @RequestBody Film item) throws Exception {
+        Film newItem = srv.add(FilmShortDTO.from(item));
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(((Film) newItem).getFilmId()).toUri();
+                            .buildAndExpand(newItem.getFilmId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -93,8 +97,8 @@ public class FilmResource {
     }
 
     @DeleteMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) throws NotFoundException, InvalidDataException, BadRequestException {
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) throws Exception {
         srv.deleteById(id);
     }
 }
