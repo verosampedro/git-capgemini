@@ -18,11 +18,9 @@ public interface FilmService {
 
     List<FilmShortDTO> getByProjection(Class<FilmShortDTO> type);
 
-    Film add(FilmShortDTO dto) throws DuplicateKeyException, InvalidDataException;
+    Film add(Film film) throws DuplicateKeyException, InvalidDataException;
 
     Film modify(Film film) throws InvalidDataException;
 
     void deleteById(int id) throws NotFoundException;
-
-	Film add(Film from);
 }

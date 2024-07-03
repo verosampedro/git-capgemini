@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.domains.entities.Actor;
+import com.example.domains.entities.Category;
 import com.example.domains.entities.Film;
+import com.example.domains.entities.Film.Rating;
 import com.example.domains.entities.Language;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -30,11 +33,47 @@ public class FilmEditDTO {
 	private String rating;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy")
 	private Short releaseYear;
-	private Byte rentalDuration;
+	@NotNull(message = "Rental duration cannot be null")
+    private Byte rentalDuration;
 	private BigDecimal rentalRate;
 	private BigDecimal replacementCost;
 	@NotBlank
-	@Size(min=2, max = 128)
+	@Size(min=2, max = 128)public static Film from1(FilmEditDTO dto) {
+	    Film film = new Film();
+	    film.setFilmId(dto.getFilmId());
+	    film.setTitle(dto.getTitle());
+	    film.setDescription(dto.getDescription());
+	    film.setReleaseYear(dto.getReleaseYear());
+	    film.setLanguage(new Language(dto.getLanguageId()));
+	    if (dto.getLanguageVOId() != null) {
+	        film.setLanguageVO(new Language(dto.getLanguageVOId()));
+	    }
+	    if (dto.getRentalDuration() != null) {
+	        film.setRentalDuration(dto.getRentalDuration().byteValue());
+	    } else {
+	        film.setRentalDuration((byte) 0); 
+	    }
+	    if (dto.getRentalRate() != null) {
+	        film.setRentalRate(dto.getRentalRate());
+	    }
+	    if (dto.getLength() != null) {
+	        film.setLength(dto.getLength());
+	    }
+	    if (dto.getReplacementCost() != null) {
+	        film.setReplacementCost(dto.getReplacementCost());
+	    }
+	    if (dto.getRating() != null) {
+	        film.setRating(Rating.getEnum(dto.getRating()));
+	    }
+	    if (dto.getActors() != null) {
+	        film.setActors(dto.getActors().stream().map(Actor::new).collect(Collectors.toList()));
+	    }
+	    if (dto.getCategories() != null) {
+	        film.setCategories(dto.getCategories().stream().map(Category::new).collect(Collectors.toList()));
+	    }
+	    return film;
+	}
+
 	private String title;
 	@NotNull
 	private Integer languageId;

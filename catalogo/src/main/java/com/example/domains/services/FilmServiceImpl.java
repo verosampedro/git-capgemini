@@ -38,8 +38,7 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
-    public Film add(FilmShortDTO dto) throws DuplicateKeyException, InvalidDataException {
-        Film film = FilmShortDTO.toEntity(dto);
+    public Film add(Film film) throws DuplicateKeyException, InvalidDataException {
         if (filmRepository.existsById(film.getFilmId())) {
             throw new DuplicateKeyException();
         }
@@ -47,12 +46,11 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
-    public void modify(FilmShortDTO dto) throws InvalidDataException {
-        Film film = FilmShortDTO.toEntity(dto);
+    public Film modify(Film film) throws InvalidDataException {
         if (!filmRepository.existsById(film.getFilmId())) {
             throw new InvalidDataException();
         }
-        filmRepository.save(film);
+        return filmRepository.save(film);
     }
 
     @Override
