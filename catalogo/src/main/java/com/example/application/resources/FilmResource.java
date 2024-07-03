@@ -122,11 +122,10 @@ public class FilmResource {
 
 	@Transactional
 	@PutMapping(path = "/{id}")
-	public FilmEditDTO modify(@PathVariable int id, @Valid @RequestBody FilmEditDTO item) throws Exception {
-	    if (item.getFilmId() != id) {
-	        throw new BadRequestException("No coinciden los identificadores");
-	    }
-	    return FilmEditDTO.from(filmService.modify(item));  
+	public FilmEditDTO modify( @PathVariable int id, @Valid @RequestBody FilmEditDTO item) throws Exception {
+		if (item.getFilmId() != id)
+			throw new BadRequestException("No coinciden los identificadores");
+		return FilmEditDTO.from(filmService.modify(FilmEditDTO.from(item)));
 	}
 
 
