@@ -20,7 +20,9 @@ public interface FilmService {
 
     Film add(FilmShortDTO dto) throws DuplicateKeyException, InvalidDataException;
 
-    void modify(FilmShortDTO dto) throws InvalidDataException;
+    Film modify(Film film) throws InvalidDataException;
 
     void deleteById(int id) throws NotFoundException;
+
+	Film add(Film from);
 }

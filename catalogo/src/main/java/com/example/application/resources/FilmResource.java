@@ -2,11 +2,11 @@ package com.example.application.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
-import org.hibernate.annotations.Parameter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,81 +24,115 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.domains.contracts.services.FilmService;
+import com.example.domains.entities.Category;
 import com.example.domains.entities.Film;
+import com.example.domains.entities.models.ActorDTO;
+import com.example.domains.entities.models.FilmDetailsDTO;
+import com.example.domains.entities.models.FilmEditDTO;
 import com.example.domains.entities.models.FilmShortDTO;
 import com.example.exceptions.BadRequestException;
-import com.example.exceptions.DuplicateKeyException;
-import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
+
 @RestController
-@RequestMapping(path = "api/peliculas/v1")
+@RequestMapping(path = "/api/peliculas/v1")
 public class FilmResource {
-    @Autowired
-    private FilmService srv;
+	
+	private FilmService filmService;
+	
+	public FilmResource(FilmService filmService) {
+		this.filmService=filmService;
+	}
+	
+	@GetMapping
+	public List<FilmShortDTO> getAll(@RequestParam(defaultValue = "short") String mode) {
+		return filmService.getByProjection(FilmShortDTO.class);
+	}
+	
+	@GetMapping(params = "mode=detail")
+	public List<FilmDetailsDTO> getAllDetail(@RequestParam(defaultValue = "short") String mode) {
+		return filmService.getAll().stream().map(item -> FilmDetailsDTO.from(item)).toList();
+	}
+	
+	@GetMapping(params = "page")
+	public Page<FilmShortDTO> getAllShortPage(Pageable page) {
+		return filmService.getByProjection(page, FilmShortDTO.class);
+	}
 
-    @GetMapping(params = "page")
-    public Page<FilmShortDTO> getAll(Pageable pageable,
-                                     @RequestParam(defaultValue = "short") String modo) {
-        return srv.getByProjection(pageable, FilmShortDTO.class);
-    }
+	@GetMapping(path = "/{id}")
+	public FilmShortDTO getOneShort(@PathVariable int id, @RequestParam(defaultValue = "short") String mode)
+			throws Exception {
+		Optional<Film> result = filmService.getOne(id);
+		if (result.isEmpty())
+			throw new NotFoundException();
+		return FilmShortDTO.from(result.get());
+	}
 
-    @GetMapping(params = "modo")
-    public List<?> getAllFilms(@RequestParam(defaultValue = "short") String modo) {
-        if ("short".equals(modo)) {
-            return srv.getByProjection(FilmShortDTO.class);
-        } else {
-            return srv.getByProjection(Film.class);
-        }
-    }
+	@GetMapping(path = "/{id}", params = "mode=detail")
+	public FilmDetailsDTO getOneDetail( @PathVariable int id, @RequestParam String mode)
+			throws Exception {
+		Optional<Film> result = filmService.getOne(id);
+		if (result.isEmpty())
+			throw new NotFoundException();
+		return FilmDetailsDTO.from(result.get());
+	}
 
-    @GetMapping
-    public List<FilmShortDTO> getAll() {
-        return srv.getByProjection(FilmShortDTO.class);
-    }
+	@GetMapping(path = "/{id}/reparto")
+	@Transactional
+	public List<ActorDTO> getCast( @PathVariable int id)
+			throws Exception {
+		Optional<Film> result = filmService.getOne(id);
+		if (result.isEmpty())
+			throw new NotFoundException();
+		return result.get().getActors().stream().map(item -> ActorDTO.from(item)).toList();
+	}
 
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<FilmShortDTO> getOne(@PathVariable int id) throws NotFoundException {
-        var item = srv.getOne(id);
-        if (item.isEmpty())
-            throw new NotFoundException();
-        return ResponseEntity.ok(FilmShortDTO.from(item.get()));
-    }
 
-    record Reparto(int id, String nombre) {}
+	@GetMapping(path = "/{id}/categorias")
+	@Transactional
+	public List<Category> getCategories(@PathVariable int id)
+			throws Exception {
+		Optional<Film> result = filmService.getOne(id);
+		if (result.isEmpty())
+			throw new NotFoundException();
+		return result.get().getCategories();
+	}
 
-    @GetMapping(path = "/{id}/reparto")
-    @Transactional
-    public List<Reparto> getReparto(@PathVariable int id) throws NotFoundException {
-        var item = srv.getOne(id);
-        if (item.isEmpty())
-            throw new NotFoundException();
-        return item.get().getFilmActors().stream()
-                   .map(o -> new Reparto(o.getActor().getActorId(), o.getActor().getFirstName()))
-                   .toList();
-    }
+	@GetMapping(path = "/calificaciones")
+	public List<Map<String, String>> getRatings() {
+		return List.of(Map.of("key", "G", "value", "Todos los públicos"),
+				Map.of("key", "PG", "value", "Guía paternal sugerida"),
+				Map.of("key", "PG-13", "value", "Guía paternal estricta"), 
+				Map.of("key", "R", "value", "Restringido"),
+				Map.of("key", "NC-17", "value", "Prohibido para audiencia de 17 años y menos"));
+	}
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @Transactional
-    public ResponseEntity<Object> add(@Valid @RequestBody Film item) throws Exception {
-        Film newItem = srv.add(FilmShortDTO.from(item));
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                            .buildAndExpand(newItem.getFilmId()).toUri();
-        return ResponseEntity.created(location).build();
-    }
 
-    @PutMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int id, @Valid @RequestBody Film item) throws BadRequestException, NotFoundException, InvalidDataException {
-        if (id != item.getFilmId())
-            throw new BadRequestException("No coinciden los id");
-        srv.modify(FilmShortDTO.from(item));
-    }
+	@PostMapping
+	@ResponseStatus(code = HttpStatus.CREATED)
+	@Transactional
+	public ResponseEntity<Object> add(@RequestBody FilmEditDTO item) throws Exception {
+		Film newItem = filmService.add(FilmEditDTO.from(item));
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newItem.getFilmId())
+				.toUri();
+		return ResponseEntity.created(location).build();
+	}
 
-    @DeleteMapping(path = "/{id}")
-    @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) throws Exception {
-        srv.deleteById(id);
-    }
+
+	@Transactional
+	@PutMapping(path = "/{id}")
+	public FilmEditDTO modify( @PathVariable int id, @Valid @RequestBody FilmEditDTO item) throws Exception {
+		if (item.getFilmId() != id)
+			throw new BadRequestException("No coinciden los identificadores");
+		return FilmEditDTO.from(filmService.modify(FilmEditDTO.from(item)));
+	}
+
+
+	@DeleteMapping(path = "/{id}")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void delete( @PathVariable int id) throws Exception {
+		if (filmService.getOne(id).isEmpty())
+			throw new BadRequestException("No encontrada pelicula con este identificador");
+		filmService.deleteById(id);
+	}
 }
