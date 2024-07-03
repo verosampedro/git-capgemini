@@ -4,10 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.domains.entities.Film;
+import com.example.domains.entities.models.FilmEditDTO;
 import com.example.domains.entities.models.FilmShortDTO;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
+
+import jakarta.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,7 +24,7 @@ public interface FilmService {
 
     Film add(Film film) throws DuplicateKeyException, InvalidDataException;
 
-    Film modify(Film film) throws InvalidDataException;
+    Film modify(@Valid Film film) throws InvalidDataException;
 
     void deleteById(int id) throws NotFoundException;
 }

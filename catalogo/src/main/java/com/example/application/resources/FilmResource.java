@@ -31,6 +31,7 @@ import com.example.domains.entities.models.FilmDetailsDTO;
 import com.example.domains.entities.models.FilmEditDTO;
 import com.example.domains.entities.models.FilmShortDTO;
 import com.example.exceptions.BadRequestException;
+import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
 
@@ -98,7 +99,7 @@ public class FilmResource {
 		return result.get().getCategories();
 	}
 
-	@GetMapping(path = "/calificaciones")
+	@GetMapping(path = "/clasificacion")
 	public List<Map<String, String>> getRatings() {
 		return List.of(Map.of("key", "G", "value", "Todos los públicos"),
 				Map.of("key", "PG", "value", "Guía paternal sugerida"),
@@ -112,19 +113,20 @@ public class FilmResource {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@Transactional
 	public ResponseEntity<Object> add(@RequestBody FilmEditDTO item) throws Exception {
-	    Film newItem = filmService.add(FilmEditDTO.from(item));
-	    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newItem.getFilmId())
-	            .toUri();
-	    return ResponseEntity.created(location).build();
+		Film newItem = filmService.add(FilmEditDTO.from(item));
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newItem.getFilmId())
+				.toUri();
+		return ResponseEntity.created(location).build();
 	}
 
 
 	@Transactional
 	@PutMapping(path = "/{id}")
-	public FilmEditDTO modify( @PathVariable int id, @Valid @RequestBody FilmEditDTO item) throws Exception {
-		if (item.getFilmId() != id)
-			throw new BadRequestException("No coinciden los identificadores");
-		return FilmEditDTO.from(filmService.modify(FilmEditDTO.from(item)));
+	public FilmEditDTO modify(@PathVariable int id, @Valid @RequestBody FilmEditDTO item) throws Exception {
+	    if (item.getFilmId() != id) {
+	        throw new BadRequestException("No coinciden los identificadores");
+	    }
+	    return FilmEditDTO.from(filmService.modify(item));  
 	}
 
 
