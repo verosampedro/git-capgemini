@@ -28,11 +28,15 @@ import com.catalogo.exceptions.DuplicateKeyException;
 import com.catalogo.exceptions.InvalidDataException;
 import com.catalogo.exceptions.NotFoundException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/actores/v1")
+@Tag(name = "actores", description = "Operaciones relacionadas con los actores")
 public class ActorResource {
 	private ActorService srv;
 
@@ -41,23 +45,24 @@ public class ActorResource {
 	}
 	
 	@GetMapping
-	public List getAll(@RequestParam(required = false, defaultValue = "largo") String modo) {
+	@Operation(summary = "Obtener todos los actores", description = "Devuelve una lista de actores en formato largo o corto")
+	public List getAll(@RequestParam(required = false, defaultValue = "largo") @Parameter(description = "Modo de visualización: largo o short") String modo) {
 		if("short".equals(modo))
 			return srv.getByProjection(ActorShort.class);
 		else
 			return srv.getByProjection(ActorDTO.class);
 	}
 	
-	/* 
-	 * Muestra por defecto 20 elementos en cada página
-	 */
+	
 	@GetMapping(params = "page")
+	@Operation(summary = "Obtener todos los actores paginados", description = "Devuelve una lista paginada de actores en formato corto")
 	public Page<ActorShort> getAll(Pageable page){
 		return srv.getByProjection(page, ActorShort.class);
 	}
 	
 	@GetMapping(path = "/{id}")
-	public ActorDTO getOne(@PathVariable int id) throws NotFoundException{
+	@Operation(summary = "Obtener un actor por ID", description = "Devuelve un actor específico por su identificador")
+	public ActorDTO getOne(@PathVariable @Parameter(description = "Identificador del actor", required = true) int id) throws NotFoundException{
 		var item = srv.getOne(id);
 		if(item.isEmpty())
 			throw new NotFoundException();
@@ -68,7 +73,8 @@ public class ActorResource {
 	
 	@GetMapping(path = "/{id}/peliculas")
 	@Transactional
-	public List<Pelicula> getPelis(@PathVariable int id) throws NotFoundException{
+	@Operation(summary = "Obtener películas de un actor por identificador", description = "Devuelve una lista de películas asociadas a un actor específico")
+	public List<Pelicula> getPelis(@PathVariable @Parameter(description = "Identificador del actor", required = true) int id) throws NotFoundException{
 		var item = srv.getOne(id);
 		if(item.isEmpty())
 			throw new NotFoundException();
@@ -78,7 +84,8 @@ public class ActorResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> create(@Valid @RequestBody Actor item) throws BadRequestException, DuplicateKeyException, InvalidDataException {
+	@Operation(summary = "Crear un nuevo actor", description = "Agrega un nuevo actor a la base de datos")
+	public ResponseEntity<Object> create(@Valid @RequestBody @Parameter(description = "Datos del nuevo actor", required = true) Actor item) throws BadRequestException, DuplicateKeyException, InvalidDataException {
 		var newItem = srv.add(item);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newItem.getActorId()).toUri();
@@ -86,7 +93,8 @@ public class ActorResource {
 	}
 	
 	@PostMapping("/corto")
-	public ResponseEntity<Object> createCorto(@Valid @RequestBody ActorDTO item) throws BadRequestException, DuplicateKeyException, InvalidDataException {
+	@Operation(summary = "Crear un nuevo actor en formato corto", description = "Agrega un nuevo actor con datos mínimos")
+	public ResponseEntity<Object> createCorto(@Valid @RequestBody @Parameter(description = "Datos del nuevo actor en formato corto", required = true) ActorDTO item) throws BadRequestException, DuplicateKeyException, InvalidDataException {
 		var newItem = srv.add(ActorDTO.from(item));
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newItem.getActorId()).toUri();
@@ -95,7 +103,8 @@ public class ActorResource {
 	
 	@PutMapping(path = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void update(@PathVariable int id, @Valid @RequestBody ActorDTO item) throws BadRequestException, NotFoundException,  InvalidDataException {
+	@Operation(summary = "Actualizar un actor", description = "Actualiza los datos de un actor existente")
+	public void update(@PathVariable @Parameter(description = "Identificador del actor", required = true) int id, @Valid @RequestBody @Parameter(description = "Datos del actor actualizados", required = true) ActorDTO item) throws BadRequestException, NotFoundException,  InvalidDataException {
 		if(id != item.getActorId())
 			throw new BadRequestException("No coinciden los identificadores");
 		srv.modify(ActorDTO.from(item));
@@ -103,7 +112,8 @@ public class ActorResource {
 	
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable int id) throws BadRequestException, NotFoundException,  InvalidDataException {
+	@Operation(summary = "Eliminar un actor", description = "Elimina un actor de la base de datos")
+	public void delete(@PathVariable @Parameter(description = "Identificador del actor", required = true) int id) throws BadRequestException, NotFoundException,  InvalidDataException {
 		srv.deleteById(id);
 	}
 	
