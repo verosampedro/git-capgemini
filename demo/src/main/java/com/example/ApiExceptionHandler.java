@@ -6,8 +6,10 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.exceptions.BadRequestException;
 import com.example.exceptions.DuplicateKeyException;
@@ -16,20 +18,27 @@ import com.example.exceptions.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
+	// https://datatracker.ietf.org/doc/html/rfc7807
+	// Content-Type: application/problem+json
 	@JsonInclude(value = Include.NON_EMPTY)
 	public static class ErrorMessage extends ProblemDetail {
+		private static final long serialVersionUID = 1L;
 		private Map<String, String> errors;
 
 		public ErrorMessage(int status, String title) {
@@ -117,6 +126,12 @@ public class ApiExceptionHandler {
 		return exception.getBody();
 	}
 
+//	@ExceptionHandler({ NotFoundException.class })
+//	@ResponseStatus(HttpStatus.NOT_FOUND)
+//	public ErrorMessage notFoundRequest(Exception exception) {
+//		return new ErrorMessage(404, exception.getMessage(), ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), null);
+//	}
+
 	@ExceptionHandler({ NotFoundException.class })
 	public ProblemDetail notFoundRequest(Exception exception) {
 		return ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
@@ -136,8 +151,10 @@ public class ApiExceptionHandler {
 	public ProblemDetail invalidData(Exception exception) {
 		var problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Datos invalidos");
 		if (exception instanceof InvalidDataException ex && ex.hasErrors()) {
+//			ex.getErrors().forEach((n, v) -> problem.setProperty(n, v));
 			problem.setProperty("errors", ex.getErrors());
 		} else if (exception instanceof BindException ex && ex.hasFieldErrors()) {
+//			ex.getFieldErrors().forEach(item -> problem.setProperty(item.getField(), item.getDefaultMessage()));
 			var errors = new HashMap<String, String>();
 			ex.getFieldErrors().forEach(item -> errors.put(item.getField(), item.getDefaultMessage()));
 			problem.setProperty("errors", errors);
@@ -146,9 +163,9 @@ public class ApiExceptionHandler {
 		return problem;
 	}
 
-	/* @ExceptionHandler({ Exception.class })
-	public ProblemDetail unknow(Exception exception) {
-		return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
-	} */
+//	@ExceptionHandler({ Exception.class })
+//	public ProblemDetail unknow(Exception exception) {
+//		return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+//	}
 
 }
