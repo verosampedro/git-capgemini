@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.catalogo.domains.contrats.services.CategoryService;
+import com.catalogo.domains.contracts.services.CategoryService;
 import com.catalogo.domains.entities.Category;
 import com.catalogo.domains.entities.models.FilmShortDTO;
 import com.catalogo.exceptions.BadRequestException;

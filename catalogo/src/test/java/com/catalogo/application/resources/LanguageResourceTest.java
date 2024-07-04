@@ -25,7 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.catalogo.domains.contrats.services.LanguageService;
+import com.catalogo.domains.contracts.services.LanguageService;
 import com.catalogo.domains.entities.Category;
 import com.catalogo.domains.entities.Language;
 import com.catalogo.domains.entities.models.ActorDTO;

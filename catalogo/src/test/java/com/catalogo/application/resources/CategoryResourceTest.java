@@ -26,7 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.catalogo.domains.contrats.services.CategoryService;
+import com.catalogo.domains.contracts.services.CategoryService;
 import com.catalogo.domains.entities.Category;
 import com.catalogo.domains.entities.Film;
 import com.catalogo.domains.entities.FilmCategory;

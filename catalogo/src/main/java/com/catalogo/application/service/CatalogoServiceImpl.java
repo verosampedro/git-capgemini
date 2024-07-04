@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.catalogo.application.contracts.CatalogoService;
-import com.catalogo.domains.contrats.services.ActorService;
-import com.catalogo.domains.contrats.services.CategoryService;
-import com.catalogo.domains.contrats.services.FilmService;
-import com.catalogo.domains.contrats.services.LanguageService;
+import com.catalogo.domains.contracts.services.ActorService;
+import com.catalogo.domains.contracts.services.CategoryService;
+import com.catalogo.domains.contracts.services.FilmService;
+import com.catalogo.domains.contracts.services.LanguageService;
 import com.catalogo.domains.entities.models.ActorDTO;
 import com.catalogo.domains.entities.models.FilmShortDTO;
 import com.catalogo.domains.entities.models.NovedadesDTO;

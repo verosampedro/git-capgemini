@@ -21,7 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.catalogo.domains.contracts.repositories.LanguageRepository;
-import com.catalogo.domains.contrats.services.LanguageService;
+import com.catalogo.domains.contracts.services.LanguageService;
 import com.catalogo.domains.entities.Language;
 import com.catalogo.exceptions.DuplicateKeyException;
 import com.catalogo.exceptions.InvalidDataException;

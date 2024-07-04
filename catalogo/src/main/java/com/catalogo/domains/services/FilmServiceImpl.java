@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.catalogo.domains.contracts.repositories.FilmRepository;
-import com.catalogo.domains.contrats.services.FilmService;
+import com.catalogo.domains.contracts.services.FilmService;
 import com.catalogo.domains.entities.Film;
 import com.catalogo.exceptions.DuplicateKeyException;
 import com.catalogo.exceptions.InvalidDataException;

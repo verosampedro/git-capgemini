@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Sort;
 
-import com.catalogo.domains.contrats.services.FilmService;
+import com.catalogo.domains.contracts.services.FilmService;
 import com.catalogo.domains.entities.Actor;
 import com.catalogo.domains.entities.models.ActorDTO;
 

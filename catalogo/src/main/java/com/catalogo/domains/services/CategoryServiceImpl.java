@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.catalogo.domains.contracts.repositories.CategoryRepository;
-import com.catalogo.domains.contrats.services.CategoryService;
+import com.catalogo.domains.contracts.services.CategoryService;
 import com.catalogo.domains.entities.Category;
 import com.catalogo.exceptions.DuplicateKeyException;
 import com.catalogo.exceptions.InvalidDataException;

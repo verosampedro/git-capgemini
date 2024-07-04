@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.catalogo.domains.contrats.services.ActorService;
+import com.catalogo.domains.contracts.services.ActorService;
 import com.catalogo.domains.entities.Actor;
 import com.catalogo.domains.entities.models.ActorDTO;
 import com.catalogo.domains.entities.models.ActorShort;

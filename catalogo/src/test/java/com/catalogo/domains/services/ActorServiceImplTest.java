@@ -21,7 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.catalogo.domains.contracts.repositories.ActorRepository;
-import com.catalogo.domains.contrats.services.ActorService;
+import com.catalogo.domains.contracts.services.ActorService;
 import com.catalogo.domains.entities.Actor;
 import com.catalogo.exceptions.DuplicateKeyException;
 import com.catalogo.exceptions.InvalidDataException;

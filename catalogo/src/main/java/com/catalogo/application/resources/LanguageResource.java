@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.catalogo.domains.contrats.services.LanguageService;
+import com.catalogo.domains.contracts.services.LanguageService;
 import com.catalogo.domains.entities.Language;
 import com.catalogo.domains.entities.models.ActorDTO;
 import com.catalogo.domains.entities.models.LanguageDTO;

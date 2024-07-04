@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.catalogo.domains.contracts.repositories.LanguageRepository;
-import com.catalogo.domains.contrats.services.LanguageService;
+import com.catalogo.domains.contracts.services.LanguageService;
 import com.catalogo.domains.entities.Language;
 import com.catalogo.exceptions.DuplicateKeyException;
 import com.catalogo.exceptions.InvalidDataException;

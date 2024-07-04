@@ -28,7 +28,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.catalogo.domains.contrats.services.FilmService;
+import com.catalogo.domains.contracts.services.FilmService;
 import com.catalogo.domains.entities.Film;
 import com.catalogo.domains.entities.models.FilmEditDTO;
 import com.catalogo.domains.entities.models.FilmShortDTO;

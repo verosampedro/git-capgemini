@@ -1,4 +1,4 @@
-package com.catalogo.domains.contrats.services;
+package com.catalogo.domains.contracts.services;
 
 import java.sql.Timestamp;
 import java.util.List;
