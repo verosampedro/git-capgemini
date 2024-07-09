@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
-import com.example.application.proxies.CalculatorProxyImpl;
+// import com.example.application.proxies.CalculatorProxyImpl;
 import com.example.domains.contracts.proxies.CalculatorProxy;
 
 @Configuration

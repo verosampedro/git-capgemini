@@ -1,4 +1,4 @@
-package com.example.application.proxies;
+/* package com.example.application.proxies;
 
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
@@ -60,3 +60,4 @@ public class CalculatorProxyImpl extends WebServiceGatewaySupport implements Cal
 	}
 
 }
+ */
