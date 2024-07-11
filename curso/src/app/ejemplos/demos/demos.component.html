@@ -1,4 +1,4 @@
-<h1>Hola {{Nombre | uppercase}}</h1>
+<h1>Hola {{Nombre | elipsis:10 | uppercase}}</h1>
 <p>
   <input type="text" [(ngModel)]="Nombre">
   <input type="button" value="saluda" (click)="saluda()" >
@@ -22,7 +22,7 @@
 <p [class.semivisible]="!visible">Ahora me ves bien</p>
 
 <p>
-  Calcula: 2 + 2 = {{2+2 | number:'2.2-3'}} = {{calcula(2,2) | currency:'EUR':'symbol':'1.2-2'}}
+  Calcula: 2 + 2 = {{(2+2) | number:'2.2-3'}} = {{calcula(2,2)| currency:'EUR':'symbol':'1.2-2' }}
 </p>
 
 <ul>
@@ -34,11 +34,10 @@
 <p>
   <select [(ngModel)]="idProvincia" >
     <option value="">--Elige opción--</option>
-    <option *ngFor="let p of listado" [value]="p.id">{{p.nombre}}</option>
+    <option *ngFor="let p of listado" [value]="p.id">{{p.nombre | capitalize}}</option>
   </select>
   Selección: {{idProvincia}}
   <input type="text" value="Tabarnia" #txtProvincia >
   <input type="button" value="add" (click)="add(txtProvincia.value)" >
 </p>
-
 <p>{{listado | json}}</p>
