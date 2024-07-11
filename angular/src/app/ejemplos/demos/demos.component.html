@@ -1,0 +1,24 @@
+<p>
+    <input
+      type="button"
+      value="Error"
+      (click)="vm.add('Error notification')"
+    />
+    <input
+      type="button"
+      value="Warn"
+      (click)="vm.add('Warning notification', vm.NotificationType.warn)"
+    />
+    <input
+      type="button"
+      value="Info"
+      (click)="
+        vm.add('Information notification', vm.NotificationType.info)
+      "
+    />
+    <input
+      type="button"
+      value="Log"
+      (click)="vm.add('To plot with notifications', vm.NotificationType.log)"
+    />
+  </p>
