@@ -4,11 +4,12 @@ import { DemosComponent } from '../demos/demos.component';
 import GraficoSvgComponent from 'src/lib/my-core/components/grafico-svg/grafico-svg.component';
 import { NotificationComponent } from "../../main/notification/notification.component";
 import { CommonModule } from '@angular/common';
+import { CalculadoraComponent } from 'src/app/common-components/calculadora/calculadora.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NotificationComponent, CommonModule, DemosComponent, HomeComponent, GraficoSvgComponent],
+  imports: [NotificationComponent, CommonModule, DemosComponent, HomeComponent, GraficoSvgComponent, CalculadoraComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -16,6 +17,7 @@ export class DashboardComponent {
 
   menu = [
     {texto: 'inicio', icono: '', componente: HomeComponent},
+    {texto: 'calculadora', icono: '', componente: CalculadoraComponent},
     {texto: 'demos', icono: '', componente: DemosComponent},
     {texto: 'gráfico', icono: '', componente: GraficoSvgComponent},
   ]
