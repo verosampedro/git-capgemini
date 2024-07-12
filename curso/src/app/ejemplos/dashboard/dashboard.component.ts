@@ -9,7 +9,7 @@ import { CalculadoraComponent } from 'src/app/common-components/calculadora/calc
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NotificationComponent, CommonModule, DemosComponent, HomeComponent, GraficoSvgComponent, CalculadoraComponent],
+  imports: [NotificationComponent, CommonModule, DemosComponent, HomeComponent, GraficoSvgComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
