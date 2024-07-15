@@ -2,7 +2,7 @@
   display: grid;
   grid-gap: 5px;
   grid-template-columns: repeat(4, 1fr);
-  background-color: #e6f3ff !important;
+  background-color: #963b6a !important;
   border-style: outset !important;
   padding: 6px !important;
   margin: 4px !important;
@@ -27,8 +27,8 @@
 }
 .Pantalla {
   grid-column: 1/span 4;
-  background-color: #b480ae;
-  color: rgb(255, 255, 255);
+  background-color: #ffb0f3;
+  color: rgb(0, 0, 0);
   border-style: inset !important;
   text-align: right !important;
   padding: 4px !important;
@@ -107,7 +107,7 @@
   }
 }
 .btnOperar {
-  color: rgb(199, 26, 147);
+  color: rgb(191, 0, 255);
   width: 100%;
   font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
