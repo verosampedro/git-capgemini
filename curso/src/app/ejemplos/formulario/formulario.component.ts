@@ -1,17 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ErrorMessagePipe, NIFNIEValidator, TypeValidator, UppercaseValidator } from '@my/core';
 
 @Component({
   selector: 'app-formulario',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ErrorMessagePipe, NIFNIEValidator, UppercaseValidator, TypeValidator],
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.css'
 })
 export class FormularioComponent {
   modo: 'add' | 'edit' = 'add'
-  elemento: any = { id: 0, name: 'Verónica', surname: 'Sampedro', email: 'verosampedro@icloud.com', age: 22, date: '15-07-2024', troubled: false}
+  elemento: any = { id: 0, name: 'Verónica', surname: 'Sampedro', nif: '58456721J', email: 'verosampedro@icloud.com', age: 22, date: '15-07-2024', troubled: false}
 
   add() {
     this.elemento = {}
@@ -19,7 +20,7 @@ export class FormularioComponent {
   }
 
   edit(key: number) {
-    this.elemento = { id: key, name: 'Verónica', surname: 'Sampedro', email: 'verosampedro@icloud.com', age: 22, date: '15/07/2024', troubled: false}
+    this.elemento = { id: key, name: 'Verónica', surname: 'Sampedro', nif: '58456721J', email: 'verosampedro@icloud.com', age: 22, date: '15/07/2024', troubled: false}
     this.modo = 'edit'
   }
 

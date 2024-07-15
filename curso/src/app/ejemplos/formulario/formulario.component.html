@@ -1,60 +1,62 @@
 <p>
-    <input type="button" value="ADD" (click)="add()" />
-    <input type="button" value="EDIT" (click)="edit(0)" />
-
-</p>
-
-<form #myForm="ngForm">
-
+    <input type="button" value="ADD" (click)="add()">
+    <input type="button" value="EDIT" (click)="edit(0)">
+  </p>
+  <form #myForm="ngForm">
     <div>
-        <label for="id" class="form-label">ID:</label>
-        <input type="number" class="form-input" id="id" name="id" [(ngModel)]="elemento.id" #id="ngModel"
-        required="">
-        <output class="error" [hidden]="id.hasError('required') || myForm.pristine">Mandatory!!</output>
+      <label for="id" class="form-label">ID:</label>
+      @if(modo==='add') {
+      <input type="number" class="form-input" id="id" name="id" [(ngModel)]="elemento.id" #id="ngModel"
+        required min="0">
+      <output class="error" [hidden]="!id.hasError('required') || myForm.pristine">Mandatory!!</output>
+      } @else {
+        <output id="id" [textContent]="elemento.id"></output>
+      }
     </div>
-
     <div>
-        <label for="name" class="form-label">Name:</label>
-        <input type="text" class="form-input" id="name" name="name" [(ngModel)]="elemento.name" #name="ngModel"
+      <label for="name" class="form-label">Name:</label>
+      <input type="text" class="form-input" id="name" name="name" [(ngModel)]="elemento.name" #name="ngModel"
         required minlength="2" maxlength="10">
-        <output class="error" [hidden]="!name.hasError('required')">Mandatory!!</output>
-        <output class="error" [hidden]="!name.hasError('minlength') && !name.hasError('maxlength')">Between 2 and 10 letters.</output>
+      <output class="error" [hidden]="!name.hasError('required')">Mandatory!!</output>
+      <output class="error" [hidden]="!name.hasError('minlength') && !name.hasError('maxlength')">Between 2 and 10 letters.</output>
     </div>
-
     <div>
-        <label for="surname" class="form-label">Surname:</label>
-        <input type="text" class="form-input" id="surname" name="surname" [(ngModel)]="elemento.surname" #surname="ngModel"
-        minlength="2" maxlength="10">
-        <output class="error" [hidden]="!surname.hasError('minlength') && !surname.hasError('maxlength')">Between 2 and 10 letters.</output>
+      <label for="surname" class="form-label">Surname:</label>
+      <input type="text" class="form-input" id="surname" name="surname" [(ngModel)]="elemento.surname" #surname="ngModel"
+        minlength="2" maxlength="10" uppercase>
+      <output class="error" [hidden]="!surname.hasError('minlength') && !surname.hasError('maxlength')">Between 2 and 10 letters.</output>
+      <output class="error" [hidden]="surname.valid">{{surname.errors | errormsg:'Uppercase'}}</output>
     </div>
-
     <div>
-        <label for="email" class="form-label">Email:</label>
-        <input type="email" class="form-input" id="email" name="email" [(ngModel)]="elemento.email" #email="ngModel"
-        maxlength="100">
+      <label for="email" class="form-label">Email:</label>
+      <input type="email" class="form-input" id="email" name="email" [(ngModel)]="elemento.email" #email="ngModel"
+        maxlength="100" >
+      <output class="error" [hidden]="email.valid">{{email.errors | errormsg}}</output>
     </div>
-
     <div>
-        <label for="age" class="form-label">Age:</label>
-        <input type="number" class="form-input" id="age" name="age" [(ngModel)]="elemento.age" #age="ngModel"
+      <label for="nif" class="form-label">NIF:</label>
+      <input type="text" class="form-input" id="nif" name="nif" [(ngModel)]="elemento.nif" #nif="ngModel"
+        maxlength="10" nifnie>
+      <output class="error" [hidden]="nif.valid">{{nif.errors | errormsg}}</output>
+    </div>
+   <div>
+      <label for="age" class="form-label">Age:</label>
+      <input type="number" class="form-input" id="age" name="age" [(ngModel)]="elemento.age" #age="ngModel"
         min="16" max="67">
+      <output class="error" [hidden]="age.valid">{{age.errors | errormsg}}</output>
     </div>
-
     <div>
-        <label for="date" class="form-label">Date:</label>
-        <input type="date" class="form-input" id="date" name="date" [(ngModel)]="elemento.date" #date="ngModel">
+      <label for="date" class="form-label">Date:</label>
+      <input type="date" class="form-input" id="date" name="date" [(ngModel)]="elemento.date" #date="ngModel">
+      <output class="error" [hidden]="date.valid">{{date.errors | errormsg}}</output>
     </div>
-
     <div>
-        <label for="troubled" class="form-label">Troubled:</label>
-        <input type="checkbox" class="form-input" id="troubled" name="troubled" [(ngModel)]="elemento.troubled" #troubled="ngModel">
+      <label for="troubled" class="form-label">Troubled:</label>
+      <input type="checkbox" class="form-input" id="troubled" name="troubled" [(ngModel)]="elemento.troubled" #troubled="ngModel">
+      <output class="error" [hidden]="troubled.valid">{{troubled.errors | errormsg}}</output>
     </div>
-
-    <p>
-        <input type="button" value="SEND" (click)="send()" [disabled]="myForm.invalid" />
-        <input type="button" value="CANCEL" (click)="cancel()" />
-    
-    </p>
-
-</form>
-
+    <div>
+      <input type="button" value="SEND" (click)="send()" [disabled]="myForm.invalid">
+      <input type="button" value="CANCEL" (click)="cancel()">
+    </div>
+  </form>
