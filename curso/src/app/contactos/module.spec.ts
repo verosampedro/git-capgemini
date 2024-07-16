@@ -5,7 +5,7 @@ import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/cor
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'src/environments/environment';
 import { LoggerService } from '@my/core';
-import { DAOServiceMock } from '../base-code';
+import { DAOServiceMock } from '../code-base';
 import { NavigationService, NotificationService } from '../common-services';
 
 import { Contacto, ContactosDAOService, ContactosViewModelService } from './servicios.service';
