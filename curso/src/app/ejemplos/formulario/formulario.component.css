@@ -1,10 +1,10 @@
 form .ng-pristine {
-  border-color: rgb(255, 44, 157);
-  box-shadow: 5px 5px 5px rgb(255, 44, 157);
+  border-color: rgb(255, 105, 225);
+  box-shadow: 5px 5px 5px hsl(255, 105, 225);
 }
 form .ng-dirty {
-  border-color: #00ff00;
-  box-shadow: 5px 5px 5px #00ff00;
+  border-color: rgb(0, 255, 0);
+  box-shadow: 5px 5px 5px rgb(0, 255, 0);
 }
 form .ng-invalid {
   border-color: red !important;

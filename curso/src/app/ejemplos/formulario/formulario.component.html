@@ -26,7 +26,7 @@
     <input type="text" class="form-input" id="surname" name="surname" [(ngModel)]="elemento.surname" #surname="ngModel"
       minlength="2" maxlength="10" uppercase>
     <output class="error" [hidden]="!surname.hasError('minlength') && !surname.hasError('maxlength')">Between 2 and 10 letters.</output>
-    <output class="error" [hidden]="surname.valid">{{surname.errors | errormsg:'Uppercase!'}}</output>
+    <output class="error" [hidden]="surname.valid">{{surname.errors | errormsg:'Uppercase'}}</output>
   </div>
   <div>
     <label for="email" class="form-label">Email:</label>
@@ -35,7 +35,7 @@
     <output class="error" [hidden]="email.valid">{{email.errors | errormsg}}</output>
   </div>
   <div>
-    <label for="nif" class="form-label">nif:</label>
+    <label for="nif" class="form-label">NIF:</label>
     <input type="text" class="form-input" id="nif" name="nif" [(ngModel)]="elemento.nif" #nif="ngModel"
       maxlength="10" nifnie>
     <output class="error" [hidden]="nif.valid">{{nif.errors | errormsg}}</output>
